@@ -1,17 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import MyFuncComp from './MyFuncComp'
+import MyClassComp from './MyClassComp'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    <div>
+        <MyFuncComp number={4} />
+        <MyFuncComp number="5" />
+        <MyClassComp number="6" ui={<h2>这是父组件传的React组件</h2>} />
+        <MyClassComp
+            number={7}
+            obj={{
+                name: 'wuyi',
+                age: 18,
+            }}
+        />
+    </div>,
+    document.getElementById('root')
+)
