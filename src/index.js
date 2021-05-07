@@ -1,17 +1,37 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from 'react'
+import ReactDOM, { flushSync } from 'react-dom'
+import src1 from './assets/1.png'
+import src2 from './assets/2.png'
+import src3 from './assets/3.png'
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const imgs = [src1, src2, src3]
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+let index = 0
+let timer
+
+const container = document.getElementById('root')
+
+function render() {
+    ReactDOM.render(<img src={imgs[index]} alt="" />, container)
+}
+
+function start() {
+    stop()
+    timer = setInterval(() => {
+        index = (index + 1) % 3
+        render()
+    }, 2000)
+}
+
+function stop() {
+    clearInterval(timer)
+}
+render()
+start()
+
+container.onmouseenter = function () {
+    stop()
+}
+container.onmouseleave = function () {
+    start()
+}
