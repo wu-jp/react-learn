@@ -1,9 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import Tick from './components/Tick'
+import A from './components/test'
 
 ReactDOM.render(
     <React.StrictMode>
-        <h1>hello react!</h1>
+        {/* <Tick number={10}></Tick> */}
+        <A />
     </React.StrictMode>,
     document.getElementById('root')
 )
