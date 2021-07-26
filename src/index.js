@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Comp from './Comp'
+import Test from './components/test'
 
 ReactDOM.render(
-    <Comp>
-        <h1>这里是父组件传递的组件内容用</h1>
-    </Comp>,
+    <div>
+        <Test></Test>
+    </div>,
     document.getElementById('root')
 )
