@@ -1,43 +1,32 @@
-import React from 'react'
-import ThreeLayout from './components/common/ThreeLayout'
+import React, { Component } from 'react'
+import FormTest from './components/FormTest'
 
-export default function App() {
-    return (
-        <div>
-            <ThreeLayout
-                gap={30}
-                left={
-                    <div
-                        style={{
-                            border: '2px solid #008c8c',
-                        }}
-                    >
-                        👈左边栏
-                    </div>
-                }
-                right={
-                    <div
-                        style={{
-                            border: '2px solid #008c8c',
-                        }}
-                    >
-                        👉右边栏
-                    </div>
-                }
-            >
-                <div
-                    style={{
-                        border: '2px solid #f40',
+export default class App extends Component {
+    state = {
+        val: 123,
+    }
+    render() {
+        return (
+            <div>
+                <input
+                    type="text"
+                    value={this.state.val}
+                    onChange={e => {
+                        this.setState({
+                            val: e.target.value,
+                        })
+                    }}
+                />
+                <button
+                    onClick={() => {
+                        console.log(this.state.val)
                     }}
                 >
-                    <h1>主区域</h1>
-                    <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit officia harum eveniet
-                        doloribus temporibus, eaque, nisi ex debitis quisquam assumenda repudiandae architecto. Magnam
-                        sunt, distinctio consectetur cum exercitationem asperiores esse? Lorem
-                    </p>
-                </div>
-            </ThreeLayout>
-        </div>
-    )
+                    获取文本框的值
+                </button>
+
+                <FormTest />
+            </div>
+        )
+    }
 }
