@@ -1,0 +1,16 @@
+属性
+
+datas：一个数组，数组每一项是一个对象，对应一个多选框
+对象具有value和text属性
+value：多选框的值
+text：多选框的文本
+例如：
+
+datas = [
+    {value:"football", text:"足球"},
+    {value:"basketball", text:"篮球"},
+    {value:"movie", text:"电影"},
+]
+name：每一个多选框的name属性值
+value: 当前选中的value值
+onChange：当选中项发生改变时的事件
