@@ -1,33 +1,14 @@
 import React from 'react'
-import ValidationComp, { A } from './ValidationComp'
-import Comp from './Comp'
+import Test from './components/common/CheckBoxGroup/Test'
+// import Test from './components/common/RadioBoxGroup/Test'
+// import Test from './components/common/Select/Test'
+// import Test from './components/test'
+// import Test from './components/FormTest'
+
 export default function App() {
     return (
         <div>
-            <ValidationComp
-                a={2}
-                d={<Comp />}
-                e={<Comp />}
-                F={Comp}
-                g={new A()}
-                sex="男"
-                h={[2, 3]}
-                i={{
-                    a: 2,
-                }}
-                j={{
-                    a: 3,
-                    name: 'abc',
-                    age: 233,
-                    address: {
-                        province: 'asdfa',
-                        city: 'adsfasdf',
-                    },
-                }}
-                k={[{ name: 'asdf', age: 33 }]}
-                m={23}
-                score={1}
-            />
+            <Test />
         </div>
     )
 }
