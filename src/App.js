@@ -1,14 +1,17 @@
-import React from 'react'
-import Test from './components/common/CheckBoxGroup/Test'
-// import Test from './components/common/RadioBoxGroup/Test'
-// import Test from './components/common/Select/Test'
-// import Test from './components/test'
-// import Test from './components/FormTest'
+import React from "react"
+
+import { A, B } from "./components/Comps"
+import withLog from "./HOC/withLog"
+import withLogin from "./HOC/withLogin"
+
+let AComp = withLogin(withLog(A, "aaaaa"))
+let BComp = withLogin(withLog(B, "bbbbb"))
 
 export default function App() {
-    return (
-        <div>
-            <Test />
-        </div>
-    )
+  return (
+    <div>
+      <AComp isLogin a={1}></AComp>
+      <BComp isLogin b={2}></BComp>
+    </div>
+  )
 }
