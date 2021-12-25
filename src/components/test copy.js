@@ -1,13 +1,17 @@
-// TODO：ref转发函数组件
+// TODO：ref转发类组件
 import React, { Component } from "react"
 
-// 被转发的组件 必须通过第二个参数接收转发的ref
-function A(props, ref) {
-  return <h1 ref={ref}>函数组件A:{props.text}</h1>
+class A extends Component {
+  render() {
+    // 通过this.props.forwardRef接收ref
+    return <h1 ref={this.props.forwardRef}>类组件A:{this.props.text}</h1>
+  }
 }
 
-// 通过 NewA组件 转发 组件A 的ref
-const NewA = React.forwardRef(A)
+// 通过forwardRef属性将ref参数传递给类组件A
+const NewA = React.forwardRef((props, ref) => {
+  return <A forwardRef={ref} {...props}></A>
+})
 
 export default class App extends Component {
   aRef = React.createRef()

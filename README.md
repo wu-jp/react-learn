@@ -1,131 +1,148 @@
-# ref (reference: 引用)
+# Ref转发
+> React文档：你不能在函数组件上使用 ref 属性，因为他们没有实例
 
-> Refs 提供了一种方式，允许我们访问 DOM 节点或在 render 方法中创建的 React 元素。
+## 父组件如何通过ref访问函数子组件A的DOM？
 
-**使用场景**：下面是几个适合使用 refs 的情况：
+通过ref转发的过程：
+1. 通过React.forwardRef()方法创建一个组件**NewA**
+   参数：**函数**组件，不能是类组件，并且函数组件需要有第二个参数得到ref
+   返回：新的组件
+2. 通过React.createRef()方法创建一个React Ref，并将他赋值
+3. 我们通过指定 ref 为 JSX 属性，将其向下传递给 `<NewA ref={ref}>`
+4. React给子函数组件第二个参数ref
+5. 将ref参数向下转发到需要的Dom元素
+6. 当ref挂载完成时，ref.current就指向该Dom元素
 
-- 管理焦点，文本选择或媒体播放。
-- 触发强制动画。
-- 集成第三方 DOM 库。
-
-> 勿过度使用 Refs
-
-
-**创建Refs**
-
+例子：
 ```js
-this.myRef = React.createRef()
-```
-
-**访问Refs**
-```js
-const node = this.myRef.current;
-```
-
-## 为MOD元素添加Refs
-
-```js
+// TODO：ref转发函数组件
 import React, { Component } from "react"
 
-export default class Test extends Component {
-  constructor(props) {
-    super(props)
-    // 创建refs，通过ref属性绑定到React元素
-    this.inputRef = React.createRef()
-    // 修改handel的this绑定
-    this.handel = this.handel.bind(this)
-  }
+// 第四步.被转发的组件 必须通过第二个参数接收转发的ref
+function A(props, ref) {
+  // 第五步
+  return <h1 ref={ref}>函数组件A:{props.text}</h1>
+}
 
-  handel() {
-    this.inputRef.current.focus()
+// 第一步
+const NewA = React.forwardRef(A)
+
+export default class App extends Component {
+  // 第二步
+  aRef = React.createRef()
+
+  //第六步
+  componentDidMount() {
+    console.log(this.aRef)
   }
 
   render() {
     return (
       <div>
-        <input ref={this.inputRef} type="text" />
-        <button onClick={this.handel}>聚焦</button>
+        {/* 第三步.NewA不会对ref做任何处理，会把它当作属性传给A组件 */}
+        <NewA ref={this.aRef} text="123"></NewA>
       </div>
     )
   }
 }
 ```
 
-## 为class组件添加Refs
 
+## 父组件如何通过ref访问类组件的DOM？
+
+通过ref转发的过程：
+1. 通过React.forwardRef()方法创建一个组件**NewA**
+   参数：forwardRef的内函数，该函数包括props和ref(React.createRef创建的ref),将内函数的两个参数都最为JSX的属性，传递给返回的组件（ref不能作为属性名，因为this.props.ref不可读）
+   返回：新的组件
+2. 通过React.createRef()方法创建一个React Ref，并将他赋值
+3. 我们通过指定 ref 为 JSX 属性，将其向下传递给 `<NewA ref={ref}>`
+4. 通过类组件的this.props.xxx拿到
+5. 将ref参数向下转发到需要的Dom元素
+6. 当ref挂载完成时，ref.current就指向该Dom元素
+
+例子：
 ```js
+// TODO：ref转发类组件
 import React, { Component } from "react"
 
-class TestH1 extends Component {
-  log() {
-    console.log("这里是TestH1组件")
-  }
+class A extends Component {
   render() {
-    return <h1>这里是TestH1组件</h1>
+    // 通过this.props.forwardRef接收ref
+    return <h1 ref={this.props.forwardRef}>类组件A:{this.props.text}</h1>
   }
 }
 
-export default class Test extends Component {
-  constructor(props) {
-    super(props)
+// 通过forwardRef属性将ref参数传递给类组件A
+const NewA = React.forwardRef((props, ref) => {
+  return <A forwardRef={ref} {...props}></A>
+})
 
-    this.testRef = React.createRef()
-    this.handel = this.handel.bind(this)
-  }
+export default class App extends Component {
+  aRef = React.createRef()
 
-  handel() {
-    // 访问refs
-    this.testRef.current.log()
+  componentDidMount() {
+    console.log(this.aRef)
   }
 
   render() {
     return (
       <div>
-        <button onClick={this.handel}>调用子组件的方法</button>
-        <TestH1 ref={this.testRef}></TestH1>
+        {/* NewA不会对ref做任何处理，会把它当作属性传给A组件 */}
+        <NewA ref={this.aRef} text="123"></NewA>
       </div>
     )
   }
 }
 ```
 
-## 回调Refs
-
-以函数方式设置Refs，称之为**回调Refs**，这个函数接收React组件实例或者HTML DOM元素最为参数，将他储存并进行访问
+## 如何通过ref访问高阶组件
 
 ```js
+// TODO：ref转发高阶组件
 import React, { Component } from "react"
 
-export default class Test extends Component {
-  constructor(props) {
-    super(props)
-
-    this.testRef = null
-
-    // element为真实的DOM元素，并将它储存到this.testRef
-    this.setTextInputRef = element => {
-      this.testRef = element
+function withLog(Comp) {
+  class LogComp extends Component {
+    componentDidMount() {
+      console.log(`日志：组件${Comp.name}被创建了！${Date.now()}`)
     }
-
-    // 访问refs
-    this.handel = () => {
-      this.testRef.focus()
+    componentWillUnmount() {
+      console.log(`日志：组件${Comp.name}被销毁了！${Date.now()}`)
     }
+    render() {
+      // 关键✨✨✨
+      const { forwardRef, ...rest } = this.props
+      return <Comp ref={forwardRef} {...rest} />
+    }
+  }
+
+  // 关键✨✨✨
+  return React.forwardRef((props, ref) => {
+    return <LogComp {...props} forwardRef={ref}></LogComp>
+  })
+}
+
+class A extends React.Component {
+  render() {
+    return <h1>组件A:{this.props.text}</h1>
+  }
+}
+
+let AComp = withLog(A)
+
+export default class App extends Component {
+  aRef = React.createRef()
+
+  componentDidMount() {
+    console.log(this.aRef)
   }
 
   render() {
     return (
       <div>
-        <input ref={this.setTextInputRef} type="text" />
-        <button onClick={this.handel}>聚焦</button>
+        <AComp text="123" ref={this.aRef}></AComp>
       </div>
     )
   }
 }
 ```
-
-**关于回调 refs 的说明**
-
-> 如果 ref 回调函数是以内联函数的方式定义的，在更新过程中它会被执行两次，第一次传入参数 null，然后第二次会传入参数 DOM 元素。这是因为在每次渲染时会创建一个新的函数实例，所以 React 清空旧的 ref 并且设置新的。通过将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，但是大多数情况下它是无关紧要的。
-
-**不推荐使用String类型的Refs**
