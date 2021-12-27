@@ -1,10 +1,15 @@
 import React, { Component } from "react"
 
-const ctx = React.createContext()
+const ctx1 = React.createContext()
+const ctx2 = React.createContext()
 
 class ChildA extends Component {
-  static contextType = ctx
+  static contextType = ctx1
   render() {
+    let obj = {
+      a: 890,
+      b: "world",
+    }
     return (
       <div>
         <p>
@@ -18,6 +23,10 @@ class ChildA extends Component {
         >
           下级组件A：a-1
         </button>
+
+        <ctx2.Provider value={obj}>
+          <ChildB />
+        </ctx2.Provider>
       </div>
     )
   }
@@ -25,7 +34,7 @@ class ChildA extends Component {
 
 function ChildB(props) {
   return (
-    <ctx.Consumer>
+    <ctx1.Consumer>
       {value => {
         return (
           <>
@@ -39,10 +48,19 @@ function ChildB(props) {
             >
               下级组件B: a=0
             </button>
+            <ctx2.Consumer>
+              {val => {
+                return (
+                  <p>
+                    这里是A组件传的值：a:{val.a} b:{val.b}
+                  </p>
+                )
+              }}
+            </ctx2.Consumer>
           </>
         )
       }}
-    </ctx.Consumer>
+    </ctx1.Consumer>
   )
 }
 
@@ -58,7 +76,7 @@ export default class NewContext extends Component {
   }
   render() {
     return (
-      <ctx.Provider value={this.state}>
+      <ctx1.Provider value={this.state}>
         <button
           onClick={() => {
             this.setState({
@@ -69,8 +87,7 @@ export default class NewContext extends Component {
           上级组件，a+1
         </button>
         <ChildA />
-        <ChildB />
-      </ctx.Provider>
+      </ctx1.Provider>
     )
   }
 }
