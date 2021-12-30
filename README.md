@@ -4,7 +4,7 @@
 
 优化：如果一个组件的属性和状态，都没有发生变化，重新渲染该组件是没有必要的
 
-PurcComponent是一个React提供的组件，如果某个组件继承自该组件，则该组件shouldComponentUpdate会进行优化，对属性和状态进行浅比较，如果相等则不会重新渲染。
+PureComponent是一个React提供的组件，如果某个组件继承自该组件，则该组件shouldComponentUpdate会进行优化，对属性和状态进行浅比较，如果相等则不会重新渲染。
 
 注意：
 
