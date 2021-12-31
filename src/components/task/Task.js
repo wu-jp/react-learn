@@ -1,5 +1,6 @@
 import React from "react"
 import PropTypes from "prop-types"
+import "./task.css"
 
 Task.propTypes = {
   name: PropTypes.string.isRequired,
@@ -9,7 +10,7 @@ Task.propTypes = {
 function Task(props) {
   return (
     <div>
-      <li>{props.name}</li>
+      <li className={props.isFinish ? "achieve" : ""}>{props.name}</li>
     </div>
   )
 }
