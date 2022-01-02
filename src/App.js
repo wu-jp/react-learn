@@ -1,24 +1,43 @@
 import React from "react"
-import ReactDOM from "react-dom"
+import ErrorBound from "./components/ErrorBound"
 
 function ChildA() {
-  // ReactDOM.createPortal()
-  // 第一个参数为：要渲染的React元素
-  // 第二个参数为：要插入的真实DOM地址
-  // 返回值：第一个参数
-  return ReactDOM.createPortal(
-    <div>
+  return (
+    <div
+      style={{
+        height: 350,
+        width: 350,
+        border: "2px solid green",
+      }}
+    >
       <h1>ChildA</h1>
       <ChildB />
-    </div>,
-    document.querySelector(".modal")
+    </div>
   )
 }
 
 function ChildB() {
+  // 模拟错误
+  let arr = undefined
+  let arrLi = arr.map(item => <li key={item}>{item}</li>)
+  return (
+    <div
+      style={{
+        height: 200,
+        width: 200,
+        border: "2px solid red",
+      }}
+    >
+      {arrLi}
+      <h1>ChildB</h1>
+    </div>
+  )
+}
+
+function ChildC() {
   return (
     <div>
-      <h1>ChildB</h1>
+      <h1>这里是ChildC组件</h1>
     </div>
   )
 }
@@ -26,12 +45,17 @@ function ChildB() {
 export default function App() {
   return (
     <div
-      onClick={e => {
-        console.log("这里是App组件", e.target)
+      style={{
+        height: 500,
+        width: 500,
+        border: "2px solid",
       }}
     >
-      <h1>App</h1>
-      <ChildA />
+      <h1>App组件</h1>
+      <ChildC />
+      <ErrorBound>
+        <ChildA />
+      </ErrorBound>
     </div>
   )
 }
