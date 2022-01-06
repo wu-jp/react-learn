@@ -1,33 +1,33 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+
+let n = 1
+
+function func1() {
+  console.log("odd 副作用函数")
+  return () => {
+    console.log("odd 清理函数")
+  }
+}
+
+function func2() {
+  console.log("even 副作用函数")
+  return () => {
+    console.log("even 清理函数")
+  }
+}
 
 export default function App() {
-  const [n, setN] = useState(0)
-
+  const [, forceUpdate] = useState({})
+  useEffect(n % 2 === 0 ? func2 : func1)
+  n++
   return (
     <div>
       <button
         onClick={() => {
-          setN(n - 1)
+          forceUpdate({})
         }}
       >
-        -
-      </button>
-      <span>{n}</span>
-      <button
-        onClick={() => {
-          // 当我们想通过连续调用两次修改方法让状态加2，必须使用回调函数的方式
-          // 状态修改会等到点击事件完成后，统一进行状态处理
-
-          // correct
-          setN(n => n + 1)
-          setN(n => n + 1)
-
-          // error
-          // setN(n + 1)
-          // setN(n + 1)
-        }}
-      >
-        +
+        强制刷新
       </button>
     </div>
   )

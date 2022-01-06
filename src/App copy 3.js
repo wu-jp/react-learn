@@ -1,39 +1,75 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 
-export default function App() {
-  const [n, setN] = useState(0)
-  const [visible, setVisible] = useState(true)
+let timer = null
+
+function stop() {
+  console.log("这里是清理函数")
+  clearInterval(timer)
+}
+
+function MoveBlock(props) {
+  const divRef = React.createRef()
+
+  useEffect(() => {
+    console.log("这里是副作用函数")
+
+    const div = divRef.current
+    let index = 0
+    let left = props.left / 50 //每16毫秒移动的距离X轴
+    let top = props.top / 50 //每16毫秒移动的距离Y轴
+    timer = setInterval(() => {
+      index++
+      const newLeft = index * left
+      const newTop = index * top
+      div.style.left = newLeft + "px"
+      div.style.top = newTop + "px"
+      if (index === 50) {
+        stop()
+      }
+    }, 16)
+
+    return stop
+  }, [props.left, props.top])
 
   return (
+    <div
+      ref={divRef}
+      style={{
+        width: 100,
+        height: 100,
+        backgroundColor: "#f40",
+        position: "fixed",
+      }}
+    ></div>
+  )
+}
+
+export default function App() {
+  const [point, setPoint] = useState({ x: 0, y: 0 })
+  useEffect(() => {})
+  const txtX = React.createRef()
+  const txtY = React.createRef()
+  return (
     <div>
+      <MoveBlock left={point.x} top={point.y} />
       <p
         style={{
-          display: visible ? "block" : "none",
+          paddingTop: 300,
         }}
       >
+        x: <input ref={txtX} type="number" />
+        y: <input ref={txtY} type="number" />
         <button
           onClick={() => {
-            setN(n - 1)
+            setPoint({
+              x: txtX.current.value,
+              y: txtY.current.value,
+            })
           }}
         >
-          -
-        </button>
-        <span>{n}</span>
-        <button
-          onClick={() => {
-            setN(n + 1)
-          }}
-        >
-          +
+          确定
         </button>
       </p>
-      <button
-        onClick={() => {
-          setVisible(!visible)
-        }}
-      >
-        显示/隐藏
-      </button>
     </div>
   )
 }
