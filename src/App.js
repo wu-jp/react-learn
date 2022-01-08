@@ -1,10 +1,13 @@
-import React from "react"
-import StudentsContainer from "./components/studentsContainer"
+import React, { useContext } from "react"
+import { ctx } from "./components/Context"
+import Test from "./components/test"
 
 export default function App() {
   return (
     <div>
-      <StudentsContainer />
+      <ctx.Provider value="abc">
+        <Test />
+      </ctx.Provider>
     </div>
   )
 }
