@@ -7,3 +7,9 @@ export async function getStudentList(page = 1, limit = 10) {
     .then(res => res.json())
     .then(res => res.data)
 }
+
+export async function getAllStudent() {
+  return await fetch(`${url}/api/student/findAll?appkey=${appkey}`)
+    .then(res => res.json())
+    .then(res => res.data)
+}

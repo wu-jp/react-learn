@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react"
+import { useStudents } from "../../myHooks/useStudents"
+import AllStudentsList from "../allStudentsList"
 import StudentsList from "../studentsList"
 import Page from "../page"
-
-import { getStudentList } from "../../services/student"
 
 /**
  * 需要做的是
@@ -14,21 +14,7 @@ import { getStudentList } from "../../services/student"
 export default function StudentsContainer() {
   const [page, setPage] = useState(1) //当前页码
   const [limit, setLimit] = useState(10) //每页的数量
-  const [count, setCount] = useState(0) //总数量
-  const [students, setStudents] = useState([]) //当前页码的学生列表
-
-  useEffect(() => {
-    // effect
-    ;(async function () {
-      let res = await getStudentList(page, limit)
-      setCount(res.cont)
-      setStudents(res.findByPage)
-    })()
-
-    return () => {
-      // cleanup
-    }
-  }, [page, limit])
+  const { students, count } = useStudents(page, limit)
 
   const changePage = function (num) {
     setPage(num)
@@ -38,6 +24,7 @@ export default function StudentsContainer() {
     <div>
       <StudentsList students={students} />
       <Page count={count} page={page} limit={limit} changePage={changePage} />
+      <AllStudentsList />
     </div>
   )
 }
