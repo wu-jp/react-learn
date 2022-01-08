@@ -1,0 +1,29 @@
+.pager-container {
+  display: flex;
+  align-items: center;
+}
+
+.pager-container span {
+  width: 20px;
+  height: 20px;
+  margin: 0 10px;
+  border-radius: 2px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pager-container .target {
+  color: salmon;
+  border: 1px solid salmon;
+}
+.img-box .left-img {
+  width: 16px;
+  height: 16px;
+}
+
+.img-box .right-img {
+  width: 16px;
+  height: 16px;
+}
