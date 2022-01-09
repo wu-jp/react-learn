@@ -1,83 +1,48 @@
-# Ref Hook
+# ImperativeHandle Hook
 
-useRef函数：
+<aside>
+💡 尽量减数使用Ref调用其他组件的方法
 
-1. 一个参数：默认值
-2. 返回一个固定的对象，`{current: 值}`
+</aside>
 
-例子一：利用ref将input元素变为可控元素
+`useImperativeHandle` 可以让你在使用 `ref` 时自定义暴露给父组件的实例值
+
+例子：
 
 ```jsx
-import React, { useState, useRef } from "react"
+import React, { useImperativeHandle, useRef, forwardRef } from "react"
+
+function Test(props, ref) {
+  useImperativeHandle(
+    ref,
+    () => ({
+      method: () => {
+        console.log("我是Test组件上的方法")
+      },
+    }),
+    []
+  )
+  return <h1>这里是Test Components</h1>
+}
+
+// React.forwardRef 会创建一个React组件，这个组件能够将其接受的 ref 属性转发到其组件树下的另一个组件中
+// React.forwardRef 接受渲染函数作为参数。React 将使用 props 和 ref 作为参数来调用此函数
+const TestWard = forwardRef(Test)
 
 export default function App() {
-  const [n, setN] = useState(10)
-	//通过useRef得到一个ref对象
-  const inpRef = useRef()
+  let testRef = useRef()
 
   return (
     <div>
-      <input type="text" ref={inpRef} />
+      <TestWard ref={testRef} />
       <button
         onClick={() => {
-          console.log(inpRef.current.value)
+          testRef.current.method()
         }}
       >
-        获取input的值
+        调用test的方法
       </button>
     </div>
   )
-}
-```
-
-例子二：实现一个倒计时功能
-
-```jsx
-import React, { useState, useRef, useEffect } from "react"
-
-export default function App() {
-  const [n, setN] = useState(10)
-  //利用useRef创建一个timer对象，用于储存定时器变量 timer = {current: 定时器}
-  let timer = useRef()
-
-  useEffect(() => {
-    if (n === 0) {
-      clearTimeout(timer.current)
-      return
-    }
-    timer.current = setTimeout(() => {
-      setN(n - 1)
-    }, 1000)
-    return () => {
-      clearTimeout(timer.current)
-    }
-  }, [n])
-  return <div>{n} </div>
-}
-```
-
-例子三：实现一个倒计时功能
-
-```jsx
-import React, { useState, useRef, useEffect } from "react"
-
-export default function App() {
-  const [n, setN] = useState(10)
-  //利用useRef创建一个timer对象，用于储存定时器变量 nRef = {current: n}
-  let nRef = useRef(n)
-
-  useEffect(() => {
-    let timer = setInterval(() => {
-      nRef.current--
-      setN(nRef.current)
-      if (nRef.current === 0) {
-        clearInterval(timer)
-      }
-    }, 1000)
-    return () => {
-      clearInterval(timer)
-    }
-  }, [nRef])
-  return <div>{n} </div>
 }
 ```
