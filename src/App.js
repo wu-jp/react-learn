@@ -1,25 +1,21 @@
-import React, { useLayoutEffect, useState, useRef, useEffect } from "react"
+import React, { useLayoutEffect, useState, useRef, useEffect, useDebugValue } from "react"
+
+function useTest() {
+  // useDebugValue用于调试
+  useDebugValue("学生列表")
+  const [students] = useState([])
+  return students
+}
 
 export default function App() {
-  console.log("render App")
-  const [n, setN] = useState(0)
-  const h1Ref = useRef()
-  // 使用useLayoutEffect来读取 DOM 布局并同步触发重渲染
+  useState(0)
+  useRef()
   useLayoutEffect(() => {
-    return () => {
-      h1Ref.current.innerText = Math.random().toFixed(6)
-    }
+    return () => {}
   })
-  return (
-    <div>
-      <h1 ref={h1Ref}>{n}</h1>
-      <button
-        onClick={() => {
-          setN(n + 1)
-        }}
-      >
-        +
-      </button>
-    </div>
-  )
+  useEffect(() => {
+    return () => {}
+  })
+  useTest()
+  return <div></div>
 }
