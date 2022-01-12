@@ -1,40 +1,24 @@
-import React, { useState } from "react"
-import { Transition } from "react-transition-group"
+import React from "react"
+import { Route } from "react-router-dom/cjs/react-router-dom.min"
 
-const duration = 1000
-
-const defaultStyle = {
-  transition: `opacity ${duration}ms ease-in-out`,
-  opacity: 0,
+function A() {
+  return <div>这里是A组件</div>
 }
 
-const transitionStyles = {
-  entering: { opacity: 1 },
-  entered: { opacity: 1 },
-  exiting: { opacity: 0 },
-  exited: { opacity: 0 },
+function B() {
+  return <div>这里是B组件</div>
+}
+
+function C() {
+  return <div>这里是C组件</div>
 }
 
 export default function App() {
-  const [inProp, setInProp] = useState(true)
   return (
     <div>
-      <Transition in={inProp} timeout={duration}>
-        {state => {
-          console.log(state)
-          return (
-            <div
-              style={{
-                ...defaultStyle,
-                ...transitionStyles[state],
-              }}
-            >
-              I'm a fade Transition!
-            </div>
-          )
-        }}
-      </Transition>
-      <button onClick={() => setInProp(!inProp)}>Click to Enter</button>
+      <Route path="/a" component={A} />
+      <Route path="/a/b" component={B} />
+      <Route path="/c" component={C} />
     </div>
   )
 }
