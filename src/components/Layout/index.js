@@ -17,5 +17,5 @@ export default function Layout(props) {
 Layout.propTypes = {
   header: PropTypes.element,
   aside: PropTypes.element,
-  children: PropTypes.element,
+  children: PropTypes.node,
 }

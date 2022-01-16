@@ -14,13 +14,13 @@ export default function Admin() {
   return (
     <div>
       <Layout header={<Header />} aside={<Aside />}>
-        <Switch>
-          <Route path="/" exact component={Welcome} />
-          <Route path="/students" exact component={StudentList} />
-          <Route path="/students/add" exact component={StudentAdd} />
-          <Route path="/courses" exact component={CourseList} />
-          <Route path="/courses/add" exact component={CourseAdd} />
-        </Switch>
+        {/* <Switch> */}
+        <Route path="/" exact component={Welcome} />
+        <Route path="/students" exact component={StudentList} />
+        <Route path="/students/add" exact component={StudentAdd} />
+        <Route path="/courses" exact component={CourseList} />
+        <Route path="/courses/add" exact component={CourseAdd} />
+        {/* </Switch> */}
       </Layout>
     </div>
   )
