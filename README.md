@@ -1,49 +1,70 @@
-# 其他组件
+# Getting Started with Create React App
 
-已学习：
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-- Router：BrowserRouter、HashRouter
-- Route
-- Switch
-- 高阶函数：withRouter
+## Available Scripts
 
-## Link
+In the project directory, you can run:
 
-生成一个无刷新跳转的a元素
+### `yarn start`
 
-- to
-  - 字符串：跳转的目标地址
-  - 对象：
-    - pathname：url路径
-    - search
-    - hash
-    - state：附加的状态信息
-- replace：bool，表示是否是替换当前地址，默认是false
-- innerRef：可以将内部的a元素的ref附着在传递的对象或函数参数上
-  - 函数
-  - ref对象
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## NavLink
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-是一种特殊的Link，Link组件具备的功能，它都有
+### `yarn test`
 
-它具备的额外功能是：根据当前地址和链接地址，来决定该链接的样式
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-- activeClassName: 匹配时使用的类名
-- activeStyle: 匹配时使用的内联样式
-- exact: 是否精确匹配
-- sensitive：匹配时是否区分大小写
-- strict：是否严格匹配最后一个斜杠
+### `yarn build`
 
-## Redirect
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-重定向组件，当加载到该组件时，会自动跳转（无刷新）到另外一个地址
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-- to：跳转的地址
-  - 字符串
-  - 对象
-- push: 默认为false，表示跳转使用替换的方式，设置为true后，则使用push的方式跳转
-- from：当匹配到from地址规则时才进行跳转
-- exact: 是否精确匹配from
-- sensitive：from匹配时是否区分大小写
-- strict：from是否严格匹配最后一个斜杠
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### `yarn eject`
+
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+
+## Learn More
+
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+
+To learn React, check out the [React documentation](https://reactjs.org/).
+
+### Code Splitting
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+
+### Analyzing the Bundle Size
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+
+### Making a Progressive Web App
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+
+### Advanced Configuration
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+
+### Deployment
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+
+### `yarn build` fails to minify
+
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
