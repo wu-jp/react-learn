@@ -1,0 +1,17 @@
+.container {
+  position: relative;
+  height: 100px;
+}
+.fast {
+  position: absolute;
+  left: 0;
+  right: 0;
+  opacity: 0;
+}
+.jieshu {
+  opacity: 0;
+}
+
+.chulai {
+  opacity: 1;
+}
