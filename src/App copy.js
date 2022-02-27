@@ -25,7 +25,8 @@ function App() {
         <Link to="/MyTransitionGroup">MyTransitionGroup</Link>
       </nav>
       <Routes>
-        <Route index element={<IndexRouter />} /> //默认路由
+        {/* 默认路由 */}
+        <Route index element={<IndexRouter />} />
         <Route path="/MyTransition" element={<MyTransition />} />
         <Route path="/MyCSSTransition" element={<MyCSSTransition />} />
         <Route path="/MySwitchTransition" element={<MySwitchTransition />} />
