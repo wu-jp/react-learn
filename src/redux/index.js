@@ -1,40 +1,27 @@
 import { createStore } from "redux"
-import {
-  ADD_NUMBER,
-  MINUS_NUMBER,
-  SET_NUMBER,
-  addNumberAction,
-  minusNumberAction,
-  setNumberAction,
-} from "./actions/number-action"
+import { updateUserAction } from "./actions/userAction"
+import { addUserAction, deleteUserAction } from "./actions/userListAction"
+import reducer from "./reducers"
 
-// 创建一个reducer
-function reducer(state, action) {
-  if (action.type === ADD_NUMBER) {
-    return state + 1
-  } else if (action.type === MINUS_NUMBER) {
-    return state - 1
-  } else if (action.type === SET_NUMBER) {
-    return action.payload
-  } else {
-    return state
-  }
+const store = createStore(reducer)
+
+const user = {
+  uuid: "001",
+  name: "测试",
+  age: 1,
 }
 
-// 创建一个store
-const store = createStore(reducer, 10)
-
-// 查看初始化store的状态
+// 先查看默认状态
 console.log(store.getState())
 
-// 分发一个增加的action
-store.dispatch(addNumberAction())
+// 分发一个更新用户学习的action
+store.dispatch(updateUserAction(user))
 console.log(store.getState())
 
-// 分发一个减少的action
-store.dispatch(minusNumberAction())
+// 分发一个新增用户的action
+store.dispatch(addUserAction(user))
 console.log(store.getState())
 
-// 分发一个设置的action
-store.dispatch(setNumberAction(100))
+// 分发一个删除用户的action
+store.dispatch(deleteUserAction("001"))
 console.log(store.getState())
