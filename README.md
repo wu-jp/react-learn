@@ -1,16 +1,17 @@
-# Redux-Store
+# 手写相关api
 
-store：用于保存数据
+## createStore
 
-通过createStore方法创建的对象
+返回一个对象：
 
-store就是把action和reducers联系起来的对象。store的职责：
+dispatch：分发一个action
+getState：得到仓库中当前的状态
+subscribe：注册一个监听器，监听器是一个无参函数，该分发一个action之后，会运行注册的监听器。该函数会返回一个函数，用于取消监听
 
-- 维持应用的state
-- 提供getState()方法获取state
-- 提供dispatch(action)方法分发action更新state
-- 通过subscribe(listener)方法注册监听器
-- 通过subscribe(listener)返回的函数注销监听函数
+## combineReducers
 
-> 一个Redux应用只有一个单一的store。当需要拆分数据处理逻辑时，你应该使用reducer组合而不是创建多个store。
->
+组装reducers，返回一个reducer，数据使用一个对象表示，对象的属性名与传递的参数对象保持一致
+
+## bindActionCreators
+
+自动分发action的函数，返回一个和该函数第一个参数的对象key名称相同的对象
