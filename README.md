@@ -1,70 +1,89 @@
-# Getting Started with Create React App
+# Redux核心基础
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> 此分支不涉及任何代码
 
-## Available Scripts
+## 传统MVC模式
 
-In the project directory, you can run:
+它是一个UI解决方案，用于降低UI及UI管理的数据的复杂度。
 
-### `yarn start`
+传统服务器的MVC：
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+![](public\md-images\2019-08-20-13-18-58.png)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+环境：
+1. 服务端需要响应一个完整的HTML
+2. 该HTML中包含页面需要的数据
+3. 浏览器仅承担渲染页面的作用
 
-### `yarn test`
+以上的这种方式叫做**服务端渲染**，即服务器端将完整的页面组装好之后，一起发送给客户端。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+服务器端需要处理UI中要用到的数据，并且要将数据嵌入到页面中，最终生成一个完整的HTML页面响应。
 
-### `yarn build`
+为了降低处理这个过程的复杂度，出现了MVC模式。
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![](public\md-images\2019-08-20-13-29-14.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Controller**: 处理请求，组装这次请求需要的数据
+**Model**：需要用于UI渲染的数据模型
+**View**：视图，用于将模型组装到界面中
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**前端MVC模式的困难**
 
-### `yarn eject`
+React解决了   数据 -> 视图   的问题
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. 前端的controller要比服务器复杂很多，因为前端中的controller处理的是用户的操作，而用户的操作场景是复杂的。
+2. 对于那些组件化的框架（比如vue、react），它们使用的是单向数据流。若需要共享数据，则必须将数据提升到顶层组件，然后数据再一层一层传递，极其繁琐。 虽然可以使用上下文来提供共享数据，但对数据的操作难以监控，容易导致调试错误的困难，以及数据还原的困难。并且，若开发一个大中型项目，共享的数据很多，会导致上下文中的数据变得非常复杂。
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+比如，上下文中有如下格式的数据：
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```js
+value = {
+    users:[{},{},{}],
+    addUser: function(u){},
+    deleteUser: function(u){},
+    updateUser: function(u){}
+}
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## 前端需要一个独立的数据解决方案
 
-## Learn More
+传统的服务端mvc模式，客户端用户进行操作，通过请求分发到服务端不同的controller，再通过model层处理数据，view层组装数据，最后返回一个新的页面，完成一次用户操作。
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+这样的模式对于前端mvc来说过于复杂，因为用户的操作场景非常复杂。
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**React解决了数据→ 视图的问题**
 
-### Code Splitting
+1. 前端的controller要比服务器渲染复杂很多，因为前端中的controller处理的用户的操作，而用户的操作场景是复杂的。
+2. 对于那些组件化的框架（如vue、react），他们使用的是单向数据流。如需要数据共享，则必须将数据提升到顶层组件，然后一层一层的传递，及其繁琐。虽然可以使用上下文来提供共享数据，但对数据的操作性难以掌控，容易导致调试错误的困难，以及数据还原的困难。并且，若在大型项目中，共享的数据很多，会导致上下文的数据非常复杂。
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+**Flux**
 
-### Analyzing the Bundle Size
+Facebook提出的数据解决方案，它的最大历史意义，在于它引入了action的概念
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+action是一个普通的对象，用于描述要干什么。**action是触发数据变化的唯一原因**
 
-### Making a Progressive Web App
+store表示数据仓库，用于存储共享数据。还可以根据不同的action更改仓库中的数据
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+示例：
 
-### Advanced Configuration
+```js
+var loginAction = {
+    type: "login",
+    payload: {
+        loginId:"admin",
+        loginPwd:"123123"
+    }
+}
+var deleteAction = {
+    type: "delete",
+    payload: 1  // 用户id为1
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+**Redux**
 
-### Deployment
+在Flux基础上，引入了reducer的概念
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+reducer：处理器，用于根据action来处理数据，处理后的数据会被仓库重新保存。
 
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![](public/md-images/2019-08-20-14-23-05.png)
