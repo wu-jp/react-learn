@@ -1,4 +1,5 @@
-import { createStore, bindActionCreators, applyMiddleware } from "redux"
+import { createStore, bindActionCreators } from "redux"
+import applyMiddleware from "../redux/applyMiddleware" // 手写
 
 import { updateUserAction } from "./actions/userAction"
 import { addUserAction, deleteUserAction } from "./actions/userListAction"
