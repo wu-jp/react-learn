@@ -1,26 +1,32 @@
-import { ADD_USER, DELETE_USER } from "../actions/userListAction"
+import { ADD_USER, DELETE_USER, SHOW_LOADING } from "../actions/userListAction"
 import { v4 as uuidv4 } from "uuid"
 
-const initialState = [
-  {
-    uuid: uuidv4(),
-    name: "wuyioo",
-    age: 18,
-  },
-  {
-    uuid: uuidv4(),
-    name: "wuyi11",
-    age: 19,
-  },
-]
+const initialState = {
+  data: [],
+  isLoading: false,
+}
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_USER:
-      return [...state, payload]
+      // return [...state, payload]
+      return {
+        ...state,
+        data: [...state.data, payload],
+      }
 
     case DELETE_USER:
-      return state.filter(item => item.uuid !== payload)
+      // return state.filter(item => item.uuid !== payload)
+      return {
+        ...state,
+        data: state.data.filter(item => item.uuid !== payload),
+      }
+
+    case SHOW_LOADING:
+      return {
+        ...state,
+        isLoading: payload,
+      }
 
     default:
       return state
