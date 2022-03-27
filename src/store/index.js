@@ -4,7 +4,8 @@ import { addUserAction, deleteUserAction, fetchUsers } from "./actions/userListA
 import reducer from "./reducers"
 
 import { logger } from "redux-logger"
-import thunk from "redux-thunk"
+// import thunk from "redux-thunk"
+import thunk from "../redux-thunk/index.js" //手写的thunk
 
 const store = createStore(reducer, applyMiddleware(thunk, logger))
 

@@ -9,7 +9,7 @@ export default function (...middlewares) {
       }
       const simpleStore = {
         getState: store.getState,
-        dispatch: store.dispatch,
+        dispatch: (...args) => dispatch(...args),
       }
 
       const dispatchProducers = middlewares.map(mid => mid(simpleStore))
