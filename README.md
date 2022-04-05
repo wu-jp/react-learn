@@ -1,11 +1,40 @@
-# redux-thunk 利用中间件处理副作用
+# 迭代器和可迭代协议
 
-thunk允许action是一个带有副作用的函数，当action是一个函数被分发时，thunk会阻止action继续向后移交。
+> 解决副作用的 redux 中间件 redux-thunk：需要改动 action，可接收 action 是一个函数 redux-promise：需要改动 action，可接收 action 是一个 promise 对象，或 action 的 payload 是一个 promise 对象 以上两个中间件，会导致 action 或 action 创建函数不再纯净。 redux-saga 将解决这样的问题，它不仅可以保持 action、action 创建函数、reducer 的纯净，而且可以用模块化的方式解决副作用，并且功能非常强大。 redux-saga 是建立在 ES6 的生成器基础上的，要熟练的使用 saga，必须理解生成器。 要理解生成器，必须先理解迭代器和可迭代协议。
 
-thunk会向函数中传递三个参数：
+## 迭代
 
-- dispatch：来自于store.dispatch
-- getState：来自于store.getState
-- extra：来自于用户设置的额外参数
-- redux-promise
-- redux-saga
+类似于遍历
+
+遍历：有多个数据组成的集合数据结构（map、set、array 等其他类数组），需要从该结构中依次取出数据进行某种处理。
+
+迭代：按照某种逻辑，依次取出下一个数据进行处理。
+
+## 迭代器 iterator
+
+JS 语言规定，如果一个对象具有 next 方法，并且 next 方法满足一定的约束，则该对象是一个迭代器（iterator）。
+
+next 方法的约束：该方法必须返回一个对象，该对象至少具有两个属性：
+
+- value：any 类型，下一个数据的值，如果 done 属性为 true，通常，会将 value 设置为 undefined
+- done：bool 类型，是否已经迭代完成
+
+通过迭代器的 next 方法，可以依次取出数据，并可以根据返回的 done 属性，判定是否迭代结束。
+
+**迭代器创建函数 iterator creator**
+它是指一个函数，调用该函数后，返回一个迭代器，则该函数称之为迭代器创建函数，可以简称位迭代器函数。
+
+## 可迭代协议
+
+ES6 中出现了 for-of 循环，该循环就是用于迭代某个对象的，因此，for-of 循环要求对象必须是可迭代的（对象必须满足可迭代协议）
+
+可迭代协议是用于约束一个对象的，如果一个对象满足下面的规范，则该对象满足可迭代协议，也称之为该对象是可以被迭代的。
+
+可迭代协议的约束如下：
+
+1. 对象必须有一个知名符号属性（Symbol.iterator）
+2. 该属性必须是一个无参的迭代器创建函数
+
+## for-of 循环的原理
+
+调用对象的[Symbol.iterator]方法，得到一个迭代器。不断调用 next 方法，只有返回的 done 为 false，则将返回的 value 传递给变量，然后进入循环体执行一次。
